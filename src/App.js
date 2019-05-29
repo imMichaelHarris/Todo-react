@@ -8,29 +8,37 @@ class App extends React.Component {
   // this component is going to take care of state, and any change handlers you need to work with your state
   constructor() {
     super();
-    const data = [
-      {
-        task: "Organize Garage",
-        id: 1528817077286,
-        completed: false
-      },
-      {
-        task: "Bake Cookies",
-        id: 1528817084358,
-        completed: false
-      }
-    ];
     this.state = {
-      todos: data
+      todos: [
+        {
+          task: "Organize Garage",
+          id: 1528817077286,
+          completed: false
+        },
+        {
+          task: "Bake Cookies",
+          id: 1528817084358,
+          completed: false
+        }
+      ]
     };
   }
+
+  addTodo = e => {
+    e.preventDefault();
+      this.setState({
+        todos: [...this.state.todos, {task: e.target.childNodes[0].value}]
+      });
+      console.log(this.state)
+  }
+
   render() {
     // TodoList is getting the array of todos from the state and passing that to the todolist component
     return (
       <div>
         <h2>Welcome to your Todo App!</h2>
         <TodoList todos={this.state.todos} />
-        <TodoForm todos={this.state.todos}/>
+        <TodoForm addTodo={this.addTodo} />
       </div>
     );
   }
