@@ -1,9 +1,10 @@
 import React from "react";
 import TodoList from "./components/TodoComponents/TodoList";
 import TodoForm from "./components/TodoComponents/TodoForm";
-import {data} from "./components/TodoComponents/data";
+import { data } from "./components/TodoComponents/data";
 
 import "./components/TodoComponents/Todo.css";
+import SearchBar from "./components/TodoComponents/SearchBar";
 
 class App extends React.Component {
   // you will need a place to store your state in this component.
@@ -14,10 +15,10 @@ class App extends React.Component {
     this.state = {
       todos: data
     };
-    console.log(window.localStorage.getItem('todos'))
-
+    console.log(window.localStorage.getItem("todos"));
   }
 
+  //              TOGGLE TODO FUNCTION                               //
   toggleTodo = id => {
     this.setState(prevState => {
       return {
@@ -34,6 +35,8 @@ class App extends React.Component {
       };
     });
   };
+
+  //              ADD TODO FUNCTION                                 //
   addTodo = task => {
     const newTask = {
       task: task,
@@ -43,27 +46,39 @@ class App extends React.Component {
     this.setState(prevState => {
       return {
         todos: [...prevState.todos, newTask]
-      }
+      };
     });
-    window.localStorage.setItem('todos', JSON.stringify(this.state));
-
+    window.localStorage.setItem("todos", JSON.stringify(this.state));
   };
-
+  //                 FILTER THE TODO LIST                             //
+  filterList = inputValue => {
+    this.setState(prevState => {
+      return {
+        todos: prevState.todos.filter(item => item.task.includes(inputValue))
+      }
+    })
+  }
+  //                CLEAR ALL COMPLETED TODOS                         //
   clearCompleted = () => {
     this.setState(prevState => {
       return {
         todos: prevState.todos.filter(item => !item.completed)
-      }
-    })
-  }
+      };
+    });
+  };
 
   render() {
     // TodoList is getting the array of todos from the state and passing that to the todolist component
     return (
       <div className="app">
         <h2>Welcome to your Todo App!</h2>
+        <SearchBar filterList={this.filterList} />
         <TodoList toggleTodo={this.toggleTodo} todos={this.state.todos} />
-        <TodoForm clearCompleted={this.clearCompleted} addTodo={this.addTodo} removeTodo={this.removeTodo} />
+        <TodoForm
+          clearCompleted={this.clearCompleted}
+          addTodo={this.addTodo}
+          removeTodo={this.removeTodo}
+        />
       </div>
     );
   }
