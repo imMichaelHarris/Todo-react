@@ -13,7 +13,8 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      todos: data
+      todos: data,
+      filteredTasks: data
     };
     console.log(window.localStorage.getItem("todos"));
   }
@@ -31,10 +32,21 @@ class App extends React.Component {
           } else {
             return item;
           }
-        })
-      };
-    });
-  };
+        }
+      ),
+      filteredTasks: prevState.filteredTasks.map(item => {
+        if (item.id === id) {
+          return {
+            ...item,
+            completed: !item.completed
+          };
+        } else {
+          return item;
+        }
+      }
+      )};
+  })
+}
 
   //              ADD TODO FUNCTION                                 //
   addTodo = task => {
@@ -45,7 +57,9 @@ class App extends React.Component {
     };
     this.setState(prevState => {
       return {
-        todos: [...prevState.todos, newTask]
+        todos: [...prevState.todos, newTask],
+        filteredTasks: [...prevState.todos, newTask]
+
       };
     });
     window.localStorage.setItem("todos", JSON.stringify(this.state));
@@ -54,7 +68,7 @@ class App extends React.Component {
   filterList = inputValue => {
     this.setState(prevState => {
       return {
-        todos: prevState.todos.filter(item => item.task.includes(inputValue))
+        filteredTasks: prevState.todos.filter(item => item.task.toLowerCase().includes(inputValue.toLowerCase()))
       }
     })
   }
@@ -62,7 +76,8 @@ class App extends React.Component {
   clearCompleted = () => {
     this.setState(prevState => {
       return {
-        todos: prevState.todos.filter(item => !item.completed)
+        todos: prevState.todos.filter(item => !item.completed),
+        filteredTasks: prevState.todos.filter(item => !item.completed)
       };
     });
   };
@@ -73,7 +88,7 @@ class App extends React.Component {
       <div className="app">
         <h2>Welcome to your Todo App!</h2>
         <SearchBar filterList={this.filterList} />
-        <TodoList toggleTodo={this.toggleTodo} todos={this.state.todos} />
+        <TodoList toggleTodo={this.toggleTodo} todos={this.state.filteredTasks} />
         <TodoForm
           clearCompleted={this.clearCompleted}
           addTodo={this.addTodo}

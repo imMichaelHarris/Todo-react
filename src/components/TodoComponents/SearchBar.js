@@ -8,14 +8,11 @@ class SearchBar extends React.Component {
     };
   }
   handleChange = e => {
-    this.setState(prevState => {
+    this.setState({
         // this.props.filterList(prevState.inputValue);
-        console.log(e.target)
-        return{
             [e.target.name]: e.target.value
-
-        }
     });
+    this.props.filterList(e.target.value);
   };
 
   render() {
