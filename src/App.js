@@ -54,7 +54,11 @@ class App extends React.Component {
   };
 
   clearCompleted = () => {
-    console.log('hey');
+    this.setState(prevState => {
+      return {
+        todos: prevState.todos.filter(item => !item.completed)
+      }
+    })
   }
 
   render() {
