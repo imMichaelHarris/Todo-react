@@ -8,9 +8,11 @@ const TodoList = props => {
   // for each entry in the array
   return (
     <div>
-      {props.todos.map((todo, i) => (
-        <Todo todo={todo} key={i} />
-      ))}
+      <ul>
+        {props.todos.map((todo, i) => (
+          <Todo todo={todo} removeTodo={props.removeTodo} key={i} />
+        ))}
+      </ul>
     </div>
   );
 };

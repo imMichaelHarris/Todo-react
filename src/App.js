@@ -2,6 +2,8 @@ import React from "react";
 import TodoList from "./components/TodoComponents/TodoList";
 import TodoForm from "./components/TodoComponents/TodoForm";
 
+import './components/TodoComponents/Todo.css'
+
 class App extends React.Component {
   // you will need a place to store your state in this component.
   // design `App` to be the parent component of your application.
@@ -24,21 +26,28 @@ class App extends React.Component {
     };
   }
 
-  addTodo = e => {
-    e.preventDefault();
+  addTodo = task => {
+    const newTask = {
+      task: task,
+      id: Date.now(),
+      completed: false
+    }
       this.setState({
-        todos: [...this.state.todos, {task: e.target.childNodes[0].value}]
+        todos: [...this.state.todos, newTask]
       });
-      console.log(this.state)
+  }
+
+  removeTodo = event => {
+    console.log(event);
   }
 
   render() {
     // TodoList is getting the array of todos from the state and passing that to the todolist component
     return (
-      <div>
+      <div className="app">
         <h2>Welcome to your Todo App!</h2>
         <TodoList todos={this.state.todos} />
-        <TodoForm addTodo={this.addTodo} />
+        <TodoForm addTodo={this.addTodo} removeTodo={this.removeTodo} />
       </div>
     );
   }

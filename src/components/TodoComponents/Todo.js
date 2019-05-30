@@ -1,7 +1,8 @@
 import React from "react";
 
 const Todo = props => {
-  return <p>{props.todo.task}</p>;
+    const removeTodo = (e) => console.log(e.target);
+  return <li>{props.todo.task}<button onClick={removeTodo} className="close">X</button></li>;
 };
 
 export default Todo;
