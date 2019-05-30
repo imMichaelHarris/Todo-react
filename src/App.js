@@ -2,7 +2,7 @@ import React from "react";
 import TodoList from "./components/TodoComponents/TodoList";
 import TodoForm from "./components/TodoComponents/TodoForm";
 
-import './components/TodoComponents/Todo.css'
+import "./components/TodoComponents/Todo.css";
 
 class App extends React.Component {
   // you will need a place to store your state in this component.
@@ -26,19 +26,35 @@ class App extends React.Component {
     };
   }
 
+  toggleTodo = id => {
+    this.setState(prevState => {
+      return {
+        todos: prevState.todos.map(item => {
+          if (item.id === id) {
+            return {
+              ...item,
+              completed: !item.completed
+            };
+          } else {
+            return item;
+          }
+        })
+      };
+    });
+  };
   addTodo = task => {
     const newTask = {
       task: task,
       id: Date.now(),
       completed: false
-    }
-      this.setState({
-        todos: [...this.state.todos, newTask]
-      });
-  }
+    };
+    this.setState({
+      todos: [...this.state.todos, newTask]
+    });
+  };
 
-  removeTodo = event => {
-    console.log(event);
+  clearCompleted = () => {
+    console.log('hey');
   }
 
   render() {
@@ -46,8 +62,8 @@ class App extends React.Component {
     return (
       <div className="app">
         <h2>Welcome to your Todo App!</h2>
-        <TodoList todos={this.state.todos} />
-        <TodoForm addTodo={this.addTodo} removeTodo={this.removeTodo} />
+        <TodoList toggleTodo={this.toggleTodo} todos={this.state.todos} />
+        <TodoForm clearCompleted={this.clearCompleted} addTodo={this.addTodo} removeTodo={this.removeTodo} />
       </div>
     );
   }
