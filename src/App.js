@@ -1,6 +1,7 @@
 import React from "react";
 import TodoList from "./components/TodoComponents/TodoList";
 import TodoForm from "./components/TodoComponents/TodoForm";
+import {data} from "./components/TodoComponents/data";
 
 import "./components/TodoComponents/Todo.css";
 
@@ -11,19 +12,10 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      todos: [
-        {
-          task: "Organize Garage",
-          id: 1528817077286,
-          completed: false
-        },
-        {
-          task: "Bake Cookies",
-          id: 1528817084358,
-          completed: false
-        }
-      ]
+      todos: data
     };
+    console.log(window.localStorage.getItem('todos'))
+
   }
 
   toggleTodo = id => {
@@ -48,9 +40,13 @@ class App extends React.Component {
       id: Date.now(),
       completed: false
     };
-    this.setState({
-      todos: [...this.state.todos, newTask]
+    this.setState(prevState => {
+      return {
+        todos: [...prevState.todos, newTask]
+      }
     });
+    window.localStorage.setItem('todos', JSON.stringify(this.state));
+
   };
 
   clearCompleted = () => {
