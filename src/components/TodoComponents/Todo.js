@@ -1,8 +1,14 @@
 import React from "react";
 
 const Todo = props => {
-    const removeTodo = (e) => console.log(e.target);
-  return <li>{props.todo.task}<button onClick={removeTodo} className="close">X</button></li>;
+  return (
+    <li className={`${props.todo.completed ? "completed" : ""}`}>
+      {props.todo.task}
+      <button onClick={() => props.toggleTodo(props.todo.id)} className="close">
+        X
+      </button>
+    </li>
+  );
 };
 
 export default Todo;
